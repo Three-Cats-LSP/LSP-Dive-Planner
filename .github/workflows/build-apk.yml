@@ -99,3 +99,15 @@ jobs:
               --latest
           cp "Android Apk/LSP_D-planner.apk" /tmp/LSP_D-planner.apk
           gh release upload latest /tmp/LSP_D-planner.apk --clobber
+
+      - name: Commit APK for direct download page
+        run: |
+          if git diff --quiet -- "Android Apk/LSP_D-planner.apk"; then
+            echo "Committed APK already matches build output"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "Android Apk/LSP_D-planner.apk"
+          git commit -m "Update Android APK [skip ci]"
+          git push
